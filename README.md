@@ -2,7 +2,10 @@
 
 **Posición:** Desarrollador Senior Full Stack (.NET + React) — Refidomsa
 **Tiempo estimado:** ~2 días de trabajo (16 horas aprox.)
-**Entrega:** Pull Request a este repositorio
+**Entrega:** 
+ - Fork  este repositorio a tu cuenta personal
+ - Pull Request a este repositorio desde el fork: [creating-a-pull-request-from-a-fork](https://docs.github.com/en/pull-requests/how-tos/create-pull-requests/creating-a-pull-request-from-a-fork)
+
 
 Gracias por participar. Este reto es intencionalmente simple en requerimientos para que tengas espacio de mostrar **cómo piensas, cómo organizas el código y qué prácticas aplicas**. No buscamos la solución más grande, sino la mejor pensada.
 
