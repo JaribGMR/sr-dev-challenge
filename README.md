@@ -1,6 +1,6 @@
 # Reto técnico — Gestión de Pedidos de Combustible
 
-**Posición:** Desarrollador Senior Full Stack (.NET + React) — Refidomsa
+**Posición:** Desarrollador Senior Full Stack (.NET o Node.js + React) — Refidomsa
 **Tiempo estimado:** ~2 días de trabajo (16 horas aprox.)
 
 **Entrega:** 
@@ -65,10 +65,16 @@ Incluye **datos semilla** (seed): al menos 3 distribuidores, los 4 productos, 2 
 
 La autenticación puede ser simple (por ejemplo, JWT con los usuarios semilla y una contraseña de prueba documentada). **No necesitas** registro de usuarios ni recuperación de contraseña.
 
-### 2.4 Backend (.NET)
+### 2.4 Backend (.NET o Node.js)
 
-- **.NET 8 o superior** (preferible .NET 10 LTS), ASP.NET Core Web API.
-- Base de datos relacional: SQL Server, PostgreSQL contenerizado en Docker o Podman
+Elige **una** de las dos opciones:
+
+- **.NET:** .NET 8 o superior (preferible .NET 10 LTS), ASP.NET Core Web API, Entity Framework Core.
+- **Node.js:** Node.js 22 LTS o superior, **TypeScript**, con un framework HTTP (Express, Fastify o NestJS) y un ORM o query builder (Prisma o TypeORM).
+
+Para ambas opciones:
+
+- Base de datos relacional: SQL Server o PostgreSQL, contenerizada en Docker o Podman.
 - Endpoints mínimos:
   - Iniciar sesión.
   - Listar pedidos con **paginación** y filtros por estado, distribuidor y rango de fechas.
@@ -77,7 +83,7 @@ La autenticación puede ser simple (por ejemplo, JWT con los usuarios semilla y 
   - Cambiar estado (aprobar, rechazar, despachar, cancelar).
   - Consultar el crédito disponible de un distribuidor.
   - Listar productos.
-- Errores con respuestas consistentes (por ejemplo, `ProblemDetails`) y códigos HTTP correctos.
+- Errores con respuestas consistentes (por ejemplo, `ProblemDetails` / [RFC 9457](https://www.rfc-editor.org/rfc/rfc9457)) y códigos HTTP correctos.
 - **Pruebas unitarias obligatorias** sobre las reglas de negocio.
 
 ### 2.5 Frontend (React o Next.js)
@@ -114,7 +120,7 @@ Te compartimos exactamente qué vamos a mirar:
 | Área | Peso | Qué valoramos |
 | --- | --- | --- |
 | Arquitectura y organización | 20% | Separación clara de responsabilidades, dependencias bien dirigidas, estructura fácil de entender. Que la arquitectura sea **proporcional** al problema (sin sobreingeniería ni código desordenado). |
-| Reglas de negocio y calidad del backend | 20% | Reglas correctamente implementadas y ubicadas, validaciones, manejo de errores, uso correcto de EF/ORM, async, inyección de dependencias. |
+| Reglas de negocio y calidad del backend | 20% | Reglas correctamente implementadas y ubicadas, validaciones, manejo de errores, uso correcto del ORM (EF Core, Prisma, etc.), async, inyección de dependencias o composición equivalente. |
 | Pruebas | 15% | Pruebas significativas de las reglas de negocio, casos límite, nombres claros. Valoramos más la calidad que la cantidad. |
 | Seguridad | 10% | Autenticación, autorización por recurso (un distribuidor no puede ver ni tocar pedidos de otro), validación de entradas, manejo de secretos. |
 | Frontend | 10% | Componentes organizados, manejo de estado y formularios, consumo de API, manejo de errores y estados de carga. |
@@ -147,7 +153,7 @@ Nada de esto es obligatorio. Si te sobra tiempo, elige **lo que mejor muestre tu
 
 - Docker Compose para levantar todo (API, frontend, base de datos).
 - Pipeline de CI con GitHub Actions (build + pruebas).
-- Pruebas de integración (por ejemplo, `WebApplicationFactory`, Testcontainers).
+- Pruebas de integración (por ejemplo, `WebApplicationFactory` en .NET, Supertest en Node.js, Testcontainers).
 - Pruebas e2e (playwright, TestCafe, etc).
 - Control de concurrencia (dos operadores aprobando el mismo pedido, dos pedidos consumiendo el mismo crédito a la vez).
 - Historial/auditoría de cambios de estado.
