@@ -66,3 +66,19 @@ Entendimiento del flujo ver diagramas:
 ## Supuestos
 - El motivo de rechazo no puede estar vacío ni ser solo espacios.
 - Se guarda una sola fecha de cambio de estado (la del último cambio).
+
+## Casos de uso con decoradores de NestJS
+- Las clases de `application/` usan `@Injectable()`.
+
+**Por qué:**
+- Es la forma habitual de NestJS y la que mejor conozco; el módulo queda más simple.
+- Alternativa descartada: clases puras registradas con `useFactory`, que mantienen `application/` sin imports del framework a cambio de más configuración.
+- `domain/` sí queda sin ningún import de NestJS ni de TypeORM. 
+
+## El dominio no usa decoradores ni depende del framework
+- Las clases de `domain/` son TypeScript puro: sin `@Injectable()`, sin decoradores de TypeORM y sin ningún import de NestJS.
+
+**Por qué:**
+- El dominio contiene las reglas del negocio, que es lo más valioso y lo más estable del sistema. No debe depender de herramientas que cambian con el tiempo.
+- Lo hace más robusto: actualizar o reemplazar el framework o el ORM no obliga a tocar ninguna regla.
+- Lo hace fácil de probar: sus pruebas corren sin base de datos, sin servidor y sin levantar NestJS.

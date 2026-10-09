@@ -67,7 +67,7 @@ export class Order {
     // 4. no puede ser domingo.
     const deliveryInDominicanTime = new Date(
       deliveryDate.getTime() -
-      DOMINICAN_HOURS_BEHIND_UTC * MILLISECONDS_PER_HOUR,
+        DOMINICAN_HOURS_BEHIND_UTC * MILLISECONDS_PER_HOUR,
     );
     const dayOfWeek = deliveryInDominicanTime.getUTCDay();
     if (dayOfWeek === SUNDAY) {
