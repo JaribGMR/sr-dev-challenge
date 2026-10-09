@@ -1,5 +1,9 @@
 import { Order } from '../../../domain/entities/order';
-import { OrderRepository } from '../../../domain/repositories/order.repository';
+import {
+  OrderRepository,
+  OrderSearch,
+  OrderSearchResult,
+} from '../../../domain/repositories/order.repository';
 
 export class InMemoryOrderRepository implements OrderRepository {
   orders: Order[] = [];
@@ -35,5 +39,54 @@ export class InMemoryOrderRepository implements OrderRepository {
     this.orders = ordersWithoutThisOne;
 
     return Promise.resolve();
+  }
+
+  search(search: OrderSearch): Promise<OrderSearchResult> {
+    // 1. Keep only the orders that pass every filter
+    const matchingOrders: Order[] = [];
+    for (const order of this.orders) {
+      const isOfAnotherDistributor =
+        search.distributorId !== null &&
+        order.distributor !== search.distributorId;
+      if (isOfAnotherDistributor) {
+        continue;
+      }
+
+      const hasAnotherStatus =
+        search.status !== null && order.getStatus() !== search.status;
+      if (hasAnotherStatus) {
+        continue;
+      }
+
+      const isBeforeTheRange =
+        search.deliveryFrom !== null &&
+        order.deliveryDate < search.deliveryFrom;
+      if (isBeforeTheRange) {
+        continue;
+      }
+
+      const isAfterTheRange =
+        search.deliveryTo !== null && order.deliveryDate > search.deliveryTo;
+      if (isAfterTheRange) {
+        continue;
+      }
+
+      matchingOrders.push(order);
+    }
+
+    // 2. Newest first
+    matchingOrders.sort((first, second) => {
+      return second.createdAt.getTime() - first.createdAt.getTime();
+    });
+
+    // 3. Cut the requested page
+    const firstPosition = (search.page - 1) * search.pageSize;
+    const lastPosition = firstPosition + search.pageSize;
+    const ordersOfPage = matchingOrders.slice(firstPosition, lastPosition);
+
+    return Promise.resolve({
+      orders: ordersOfPage,
+      total: matchingOrders.length,
+    });
   }
 }
