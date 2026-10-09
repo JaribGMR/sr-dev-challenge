@@ -4,7 +4,8 @@ import { InvalidLineCountError } from '../errors/invalid-line-count.error';
 import { MaximumGallonsError } from '../errors/maximum-gallons.error';
 import { SundayDeliveryError } from '../errors/sunday-delivery.error';
 import { OrderLine } from './order-line';
-import { OrderStatus } from './order-status';
+import { RejectionReasonRequiredError } from '../errors/rejection-reason-required.error';
+import { OrderStatus, assertTransition } from './order-status';
 
 export const MAXIMUM_LINES_PER_ORDER = 4;
 export const MAXIMUM_GALLONS_PER_ORDER = 9000;
@@ -20,8 +21,10 @@ export class Order {
   readonly lines: OrderLine[];
   readonly deliveryDate: Date;
   readonly createdAt: Date;
-  readonly status: OrderStatus;
 
+  private status: OrderStatus;
+  private statusChangedAt: Date | null;
+  private rejectionReason: string | null;
   constructor(
     id: string,
     distributor: string,
@@ -78,6 +81,9 @@ export class Order {
     this.createdAt = createdAt;
 
     this.status = OrderStatus.Pending;
+
+    this.statusChangedAt = null;
+    this.rejectionReason = null;
   }
 
   getTotalGallons(): number {
@@ -94,5 +100,46 @@ export class Order {
       totalPay = totalPay + line.getSubtotalPay();
     }
     return totalPay;
+  }
+
+  getStatus(): OrderStatus {
+    return this.status;
+  }
+
+  getStatusChangedAt(): Date | null {
+    return this.statusChangedAt;
+  }
+
+  getRejectionReason(): string | null {
+    return this.rejectionReason;
+  }
+
+  approve(changedAt: Date): void {
+    this.changeStatus(OrderStatus.Approved, changedAt);
+  }
+
+  reject(reason: string, changedAt: Date): void {
+    const hasNoReason = reason.trim().length === 0;
+    if (hasNoReason) {
+      throw new RejectionReasonRequiredError();
+    }
+
+    this.changeStatus(OrderStatus.Rejected, changedAt);
+    this.rejectionReason = reason.trim();
+  }
+
+  cancel(changedAt: Date): void {
+    this.changeStatus(OrderStatus.Cancelled, changedAt);
+  }
+
+  dispatch(changedAt: Date): void {
+    this.changeStatus(OrderStatus.Dispatched, changedAt);
+  }
+
+  private changeStatus(newStatus: OrderStatus, changedAt: Date): void {
+    assertTransition(this.status, newStatus);
+
+    this.status = newStatus;
+    this.statusChangedAt = changedAt;
   }
 }

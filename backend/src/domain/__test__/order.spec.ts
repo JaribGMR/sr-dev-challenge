@@ -28,7 +28,7 @@ describe('Order', () => {
         createdAt,
       );
 
-      expect(order.status).toBe(OrderStatus.Pending);
+      expect(order.getStatus()).toBe(OrderStatus.Pending);
     });
 
     it('adds the gallons of all its lines', () => {

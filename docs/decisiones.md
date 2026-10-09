@@ -56,3 +56,13 @@ Entendimiento del flujo ver diagramas:
 - La hora actual entra como parámetro. Order.create(...) recibe "ahora" en vez de consultarlo por dentro. Así una prueba puede decir "hoy es viernes a las 10:00" y comprobar el caso de 23 h 59 min contra el de 24 h.
 
 
+## El estado del pedido solo cambia por sus métodos
+- `status` es privado; se cambia con `approve`, `reject`, `cancel` y `dispatch`, y se lee con `getStatus`.
+
+**Por qué:**
+- Impide asignar un estado directamente y saltarse la tabla de transiciones.
+- Los permisos por rol no van en la entidad; van en los casos de uso.
+
+## Supuestos
+- El motivo de rechazo no puede estar vacío ni ser solo espacios.
+- Se guarda una sola fecha de cambio de estado (la del último cambio).
