@@ -10,7 +10,7 @@ export class TypeOrmDistributorRepository implements DistributorRepository {
   constructor(
     @InjectRepository(DistributorOrmEntity)
     private readonly repository: Repository<DistributorOrmEntity>,
-  ) {}
+  ) { }
 
   async findAll(): Promise<Distributor[]> {
     const rows = await this.repository.find({ order: { name: 'ASC' } });

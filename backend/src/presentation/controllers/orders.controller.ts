@@ -46,7 +46,7 @@ export class OrdersController {
     private readonly rejectOrder: RejectOrderUseCase,
     private readonly dispatchOrder: DispatchOrderUseCase,
     private readonly cancelOrder: CancelOrderUseCase,
-  ) {}
+  ) { }
 
   // GET /orders?status=&distributorId=&deliveryFrom=&deliveryTo=&page=&pageSize=
   @Get()
@@ -111,7 +111,7 @@ export class OrdersController {
     const order = await this.createOrder.execute({
       user: user,
       lines: body.lines,
-      deliveryDate: new Date(body.deliveryDate),
+      deliveryDate: new Date(body.deliveryDate!),
     });
     return toOrderResponse(order);
   }
@@ -141,7 +141,7 @@ export class OrdersController {
     const order = await this.rejectOrder.execute({
       user: user,
       orderId: orderId,
-      reason: body.reason,
+      reason: body.reason!,
     });
     return toOrderResponse(order);
   }
