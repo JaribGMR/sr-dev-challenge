@@ -21,8 +21,6 @@ export interface OrderResponse {
   lines: OrderLineResponse[];
 }
 
-// Turns the Order of the domain into what the API answers.
-// This way a change in the domain does not change the API by accident.
 export function toOrderResponse(order: Order): OrderResponse {
   const lines: OrderLineResponse[] = [];
   for (const line of order.lines) {

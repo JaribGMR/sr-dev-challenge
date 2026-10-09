@@ -8,8 +8,7 @@ import {
 import { Request, Response } from 'express';
 import { DomainError } from '../../domain/errors/domain.error';
 
-// The HTTP status of each business error. A code that is not here answers 422:
-// the request is well written, but it breaks a business rule.
+
 const STATUS_BY_ERROR_CODE: Record<string, number> = {
   INVALID_CREDENTIALS: 401,
   FORBIDDEN_ACTION: 403,
@@ -22,7 +21,6 @@ const STATUS_BY_ERROR_CODE: Record<string, number> = {
 };
 const DEFAULT_BUSINESS_ERROR_STATUS = 422;
 
-// The answer of every error, following RFC 9457 (Problem Details).
 interface ProblemDetails {
   type: string;
   title: string;
@@ -33,7 +31,7 @@ interface ProblemDetails {
   errors?: string[];
 }
 
-// Catches every error of the application and answers always with the same shape.
+
 @Catch()
 export class ProblemDetailsFilter implements ExceptionFilter {
   private readonly logger = new Logger(ProblemDetailsFilter.name);
@@ -66,7 +64,7 @@ export class ProblemDetailsFilter implements ExceptionFilter {
       };
     }
 
-    // 2. An error of NestJS: validation of a DTO, missing token, unknown route...
+
     if (exception instanceof HttpException) {
       const status = exception.getStatus();
       const problem: ProblemDetails = {

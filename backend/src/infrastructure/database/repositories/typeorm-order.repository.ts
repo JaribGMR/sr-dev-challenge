@@ -24,7 +24,7 @@ export class TypeOrmOrderRepository implements OrderRepository {
   constructor(
     @InjectRepository(OrderOrmEntity)
     private readonly repository: Repository<OrderOrmEntity>,
-  ) {}
+  ) { }
 
   async findById(id: string): Promise<Order | null> {
     const row = await this.repository.findOneBy({ id: id });

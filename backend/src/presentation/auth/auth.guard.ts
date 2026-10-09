@@ -16,12 +16,10 @@ import {
   type UserRepository,
 } from '../../domain/repositories/user.repository';
 
-// A request that already passed the guard: it carries the logged-in user.
 export interface AuthenticatedRequest extends Request {
   user: User;
 }
 
-// Runs before the controller. It lets the request pass only with a valid token.
 @Injectable()
 export class AuthGuard implements CanActivate {
   constructor(
@@ -29,7 +27,7 @@ export class AuthGuard implements CanActivate {
     private readonly tokenService: TokenService,
     @Inject(USER_REPOSITORY)
     private readonly userRepository: UserRepository,
-  ) {}
+  ) { }
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest<AuthenticatedRequest>();
