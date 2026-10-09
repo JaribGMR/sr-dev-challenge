@@ -1,13 +1,14 @@
 import { InvalidGallonsError } from '../errors/invalid-gallons.error';
 import { MinimumGallonsError } from '../errors/minimum-gallons.error';
+import { ProductId } from './product';
 
 export const MINIMUM_GALLONS_PER_LINE = 500;
 export class OrderLine {
-  readonly product: string;
+  readonly productId: ProductId;
   readonly gallons: number;
   readonly unitPriceCents: number;
 
-  constructor(product: string, gallons: number, unitPriceCents: number) {
+  constructor(productId: ProductId, gallons: number, unitPriceCents: number) {
     const hasDecimals = !Number.isInteger(gallons);
     if (hasDecimals) {
       throw new InvalidGallonsError(gallons);
@@ -18,7 +19,7 @@ export class OrderLine {
       throw new MinimumGallonsError(gallons, MINIMUM_GALLONS_PER_LINE);
     }
 
-    this.product = product;
+    this.productId = productId;
     this.gallons = gallons;
     this.unitPriceCents = unitPriceCents;
   }

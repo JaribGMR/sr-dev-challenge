@@ -7,12 +7,19 @@ export enum ProductName {
   RegularDiesel = 'Gasoil Regular',
 }
 
+export enum ProductId {
+  PremiumGasoline = 'premium-gasoline',
+  RegularGasoline = 'regular-gasoline',
+  OptimumDiesel = 'optimum-diesel',
+  RegularDiesel = 'regular-diesel',
+}
+
 export class Product {
-  readonly id: string;
+  readonly id: ProductId;
   readonly name: ProductName;
   readonly pricePerGallonCents: number; //El precio por galón aqui no debo saberlo
 
-  constructor(id: string, name: ProductName, pricePerGallonCents: number) {
+  constructor(id: ProductId, name: ProductName, pricePerGallonCents: number) {
     const hasDecimals = !Number.isInteger(pricePerGallonCents);
     if (hasDecimals) {
       throw new InvalidPriceError(pricePerGallonCents);
