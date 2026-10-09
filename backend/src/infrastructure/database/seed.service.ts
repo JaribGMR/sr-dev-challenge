@@ -8,7 +8,14 @@ import { DistributorOrmEntity } from './entities/distributor.orm-entity';
 import { ProductOrmEntity } from './entities/product.orm-entity';
 import { UserOrmEntity } from './entities/user.orm-entity';
 
-export const SEED_PASSWORD = 'Refidomsa123';
+// The test users come from the .env file. Without it, these documented values are used.
+const SEED_PASSWORD = process.env.SEED_PASSWORD ?? "";
+const SEED_OPERATOR_EMAIL =
+  process.env.SEED_OPERATOR_EMAIL ?? ""
+const SEED_DISTRIBUTOR_1_EMAIL =
+  process.env.SEED_DISTRIBUTOR_1_EMAIL ?? ""
+const SEED_DISTRIBUTOR_2_EMAIL =
+  process.env.SEED_DISTRIBUTOR_2_EMAIL ?? "";
 
 // Fills the empty database with the data the challenge asks for:
 // 4 products, 3 distributors, 2 distributor users and 1 operator.
@@ -24,7 +31,7 @@ export class SeedService implements OnApplicationBootstrap {
     @InjectRepository(UserOrmEntity)
     private readonly users: Repository<UserOrmEntity>,
     private readonly passwordHasher: BcryptPasswordHasher,
-  ) {}
+  ) { }
 
   // NestJS calls this once, when the application starts.
   async onApplicationBootstrap(): Promise<void> {
@@ -84,7 +91,7 @@ export class SeedService implements OnApplicationBootstrap {
       {
         id: 'user-1',
         name: 'Luis Gómez',
-        email: 'operador@refidomsa.test',
+        email: SEED_OPERATOR_EMAIL,
         passwordHash: passwordHash,
         role: UserRole.Operator,
         distributorId: null,
@@ -92,7 +99,7 @@ export class SeedService implements OnApplicationBootstrap {
       {
         id: 'user-2',
         name: 'Ana Pérez',
-        email: 'ana@losprados.test',
+        email: SEED_DISTRIBUTOR_1_EMAIL,
         passwordHash: passwordHash,
         role: UserRole.Distributor,
         distributorId: 'distributor-1',
@@ -100,7 +107,7 @@ export class SeedService implements OnApplicationBootstrap {
       {
         id: 'user-3',
         name: 'Carlos Díaz',
-        email: 'carlos@elcaribe.test',
+        email: SEED_DISTRIBUTOR_2_EMAIL,
         passwordHash: passwordHash,
         role: UserRole.Distributor,
         distributorId: 'distributor-2',

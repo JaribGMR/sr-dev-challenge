@@ -4,11 +4,11 @@ import { Column, Entity, PrimaryColumn } from 'typeorm';
 @Entity('products')
 export class ProductOrmEntity {
   @PrimaryColumn({ type: 'varchar' })
-  id?: string;
+  id: string;
 
   @Column({ type: 'varchar' })
-  name?: string;
+  name: string;
 
   @Column({ name: 'price_per_gallon_cents', type: 'integer' })
-  pricePerGallonCents?: number;
+  pricePerGallonCents: number;
 }
