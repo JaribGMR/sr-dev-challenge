@@ -67,7 +67,7 @@ export class Order {
     // 4. no puede ser domingo.
     const deliveryInDominicanTime = new Date(
       deliveryDate.getTime() -
-        DOMINICAN_HOURS_BEHIND_UTC * MILLISECONDS_PER_HOUR,
+      DOMINICAN_HOURS_BEHIND_UTC * MILLISECONDS_PER_HOUR,
     );
     const dayOfWeek = deliveryInDominicanTime.getUTCDay();
     if (dayOfWeek === SUNDAY) {
@@ -141,5 +141,12 @@ export class Order {
 
     this.status = newStatus;
     this.statusChangedAt = changedAt;
+  }
+
+  usesCredit(): boolean {
+    const isPending = this.status === OrderStatus.Pending;
+    const isApproved = this.status === OrderStatus.Approved;
+
+    return isPending || isApproved;
   }
 }
