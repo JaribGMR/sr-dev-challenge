@@ -86,6 +86,18 @@ export class Order {
     this.rejectionReason = null;
   }
 
+  // Only for the repositories: puts back the status an order had when it was saved.
+  // It does not check transitions, because the order already went through them.
+  restoreStatus(
+    status: OrderStatus,
+    statusChangedAt: Date | null,
+    rejectionReason: string | null,
+  ): void {
+    this.status = status;
+    this.statusChangedAt = statusChangedAt;
+    this.rejectionReason = rejectionReason;
+  }
+
   getTotalGallons(): number {
     let totalGallons = 0;
     for (const line of this.lines) {

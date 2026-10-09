@@ -8,4 +8,8 @@ export class FakeTokenService implements TokenService {
     this.lastPayload = payload;
     return Promise.resolve(`token-of-${payload.userId}`);
   }
+
+  verify(): Promise<TokenPayload | null> {
+    return Promise.resolve(this.lastPayload);
+  }
 }

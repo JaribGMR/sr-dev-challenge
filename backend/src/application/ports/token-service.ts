@@ -12,4 +12,6 @@ export interface TokenPayload {
 export interface TokenService {
   // Creates the token the user sends in every request after logging in.
   sign(payload: TokenPayload): Promise<string>;
+  // Reads a token. Returns null when the token is not valid or has expired.
+  verify(token: string): Promise<TokenPayload | null>;
 }
