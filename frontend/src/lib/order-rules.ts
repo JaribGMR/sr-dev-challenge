@@ -11,16 +11,13 @@ const SUNDAY = 0;
 
 export interface FormLine {
   productId: string;
-  // Text, because it is what the user is typing in the input
   gallons: string;
 }
 
-// The input gives "2026-10-12T10:00", meaning that hour in Dominican time.
 export function toDeliveryDate(inputValue: string): Date {
   return new Date(`${inputValue}:00.000-04:00`);
 }
 
-// Returns the list of problems. An empty list means the form is valid.
 export function validateOrder(
   lines: FormLine[],
   deliveryInput: string,
@@ -29,7 +26,6 @@ export function validateOrder(
 ): string[] {
   const problems: string[] = [];
 
-  // Rule 1: between 1 and 4 lines, without repeated products
   if (lines.length < 1 || lines.length > MAXIMUM_LINES_PER_ORDER) {
     problems.push('El pedido debe tener entre 1 y 4 líneas.');
   }
@@ -53,7 +49,6 @@ export function validateOrder(
     problems.push('No se puede repetir un producto en el pedido.');
   }
 
-  // Rule 2: minimum 500 gallons per line, maximum 9,000 per order
   let totalGallons = 0;
   let hasInvalidGallons = false;
   let hasLineBelowMinimum = false;
@@ -78,7 +73,6 @@ export function validateOrder(
     problems.push('El pedido no puede superar los 9,000 galones.');
   }
 
-  // Rule 3: at least 24 hours from now, and never on Sunday
   if (deliveryInput === '') {
     problems.push('Indica la fecha de entrega.');
   } else {
@@ -98,7 +92,6 @@ export function validateOrder(
     }
   }
 
-  // Rule 4: the total cannot be more than the available credit
   if (availableCreditCents !== null && totalCents > availableCreditCents) {
     problems.push('El total del pedido supera el crédito disponible.');
   }

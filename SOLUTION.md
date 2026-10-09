@@ -11,6 +11,9 @@ Backend en NestJS 11 con Clean Architecture, PostgreSQL con TypeORM, y frontend 
 
 Tres terminales, desde la raíz del repositorio.
 
+**0. Usuarios**
+Una vez descagado el pryecto Antes de levantarlo llenar el env tal como se puso el .env.example con la contraseña general para todos los roles y agregar diferentes correos validos para los 2 tipos de roles existentes, operador y distribuidor
+
 **1. Base de datos**
 
 ```bash
@@ -56,7 +59,7 @@ cd backend
 npm test
 ```
 
-Son 157 pruebas unitarias. No necesitan base de datos ni servidor: prueban las reglas de negocio (`src/domain/__test__`) y los casos de uso con repositorios en memoria (`src/application/__test__`).
+Las pruebas unitarias. No necesitan base de datos ni servidor: prueban las reglas de negocio (`src/domain/__test__`) y los casos de uso con repositorios en memoria (`src/application/__test__`).
 
 ## Endpoints
 
